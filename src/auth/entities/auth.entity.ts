@@ -17,6 +17,9 @@ export class Auth {
     prenom: string;
 
     @Column()
+    tel: string;
+
+    @Column()
     password: string;
 
     @Column()
