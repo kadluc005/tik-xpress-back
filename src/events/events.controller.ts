@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req } from '@nestjs/common';
 import { EventsService } from './events.service';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
@@ -11,8 +11,9 @@ export class EventsController {
 
   @UseGuards(AuthGuard)
   @Post('create')
-  create(@Body() createEventDto: CreateEventDto) {
-    return this.eventsService.create(createEventDto);
+  create(@Body() createEventDto: CreateEventDto, @Req() req) {
+    const userId = req.user.sub
+    return this.eventsService.create(createEventDto, userId);
   }
 
   @Get()
@@ -26,14 +27,17 @@ export class EventsController {
   }
 
   @UseGuards(AuthGuard)
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateEventDto: UpdateEventDto) {
-    return this.eventsService.update(+id, updateEventDto);
+  @Patch('update/:id')
+  update(@Param('id') id: number, @Body() updateEventDto: UpdateEventDto, @Req() req) {
+
+    const userId = req.user.sub;
+    return this.eventsService.update(+id, updateEventDto, userId);
   }
 
   @UseGuards(AuthGuard)
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.eventsService.remove(+id);
+  remove(@Param('id') id: number, @Req() req) {
+    const userId = req.user.sub;
+    return this.eventsService.remove(+id, userId);
   }
 }

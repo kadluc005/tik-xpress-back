@@ -5,6 +5,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { EventsModule } from './events/events.module';
+import { TypeBilletModule } from './type-billet/type-billet.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { EventsModule } from './events/events.module';
     }),
     AuthModule,
     EventsModule,
+    TypeBilletModule,
   ],
   controllers: [AppController],
   providers: [AppService],

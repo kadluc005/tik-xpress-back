@@ -1,4 +1,5 @@
-import { PrimaryGeneratedColumn, Column, Entity } from "typeorm";
+import { Auth } from "src/auth/entities/auth.entity";
+import { PrimaryGeneratedColumn, Column, Entity, ManyToOne } from "typeorm";
 
 @Entity({ name: "events" })
 export class Event {
@@ -25,6 +26,9 @@ export class Event {
 
     @Column()
     image_url: string;
+
+    @ManyToOne(()=> Auth, auth => auth.id)
+    organisateur: Auth;
 
     @Column()
     is_active: boolean;

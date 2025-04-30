@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn, TableInheritance } from "typeorm";
+import { Event } from "src/events/entities/event.entity";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn, TableInheritance } from "typeorm";
 
 @Entity({ name: "users"})
 @TableInheritance({column: {type: "varchar", name: "type"}})
