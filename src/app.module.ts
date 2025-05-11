@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { EventsModule } from './events/events.module';
 import { TypeBilletModule } from './type-billet/type-billet.module';
+import { RoleModule } from './role/role.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { TypeBilletModule } from './type-billet/type-billet.module';
     AuthModule,
     EventsModule,
     TypeBilletModule,
+    RoleModule,
   ],
   controllers: [AppController],
   providers: [AppService],

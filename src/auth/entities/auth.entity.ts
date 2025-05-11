@@ -1,5 +1,7 @@
 import { Event } from "src/events/entities/event.entity";
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn, TableInheritance } from "typeorm";
+import { Column, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn, TableInheritance } from "typeorm";
+import { Role } from "./role.entity";
+import { UserRole } from "./user-role.entity";
 
 @Entity({ name: "users"})
 @TableInheritance({column: {type: "varchar", name: "type"}})
@@ -23,8 +25,12 @@ export class Auth {
     @Column()
     password: string;
 
-    @Column()
-    type: string;
+    @OneToMany(()=> UserRole, userrole => userrole.user)
+    roles: UserRole[];
+
+    @OneToMany(()=> Event, event => event.organisateur)
+    events: Event[];
+
 
     @Column()
     is_active: boolean;

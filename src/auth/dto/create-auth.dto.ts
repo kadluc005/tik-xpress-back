@@ -11,4 +11,5 @@ export class CreateAuthDto {
     tel: string;
     
     password: string;
+
 }

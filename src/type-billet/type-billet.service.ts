@@ -61,4 +61,5 @@ export class TypeBilletService {
   remove(id: number) {
     return `This action removes a #${id} typeBillet`;
   }
+
 }

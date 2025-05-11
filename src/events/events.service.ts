@@ -21,6 +21,7 @@ export class EventsService {
       created_at: new Date(),
       updated_at: new Date(),
     })
+    // console.log(event)
     return this.eventRepository.save(event);
   }
 

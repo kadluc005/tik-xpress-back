@@ -3,6 +3,8 @@ import { EventsService } from './events.service';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
+import { RolesGuard } from 'src/role/roles.guard';
+import { Roles } from 'src/role/roles.decorator';
 
 @Controller('events')
 export class EventsController {
@@ -10,9 +12,12 @@ export class EventsController {
 
 
   @UseGuards(AuthGuard)
+  @Roles('organisateur')
   @Post('create')
   create(@Body() createEventDto: CreateEventDto, @Req() req) {
     const userId = req.user.sub
+    console.log(userId)
+    // console.log(createEventDto)
     return this.eventsService.create(createEventDto, userId);
   }
 

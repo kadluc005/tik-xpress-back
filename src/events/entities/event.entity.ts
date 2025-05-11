@@ -24,10 +24,16 @@ export class Event {
     @Column()
     lieu: string;
 
+    @Column('float')
+    latitude: number;
+
+    @Column('float')
+    longitude: number;
+
     @Column()
     image_url: string;
 
-    @ManyToOne(()=> Auth, auth => auth.id)
+    @ManyToOne(()=> Auth, auth => auth.events)
     organisateur: Auth;
 
     @Column()

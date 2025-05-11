@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { JwtModule } from '@nestjs/jwt';
@@ -7,6 +7,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Auth } from './entities/auth.entity';
 import { ConfigService } from '@nestjs/config';
 import { AuthGuard } from './auth.guard';
+import { RoleModule } from 'src/role/role.module';
 
 @Module({
   controllers: [AuthController],
@@ -20,7 +21,8 @@ import { AuthGuard } from './auth.guard';
         signOptions: { expiresIn: '30000s' },
       }),
     }),
+    forwardRef(() => RoleModule), // Utilisé pour éviter les dépendances circulaires
   ],
-  exports: [AuthGuard, JwtModule]
+  exports: [AuthGuard, JwtModule, AuthService]
 })
 export class AuthModule {}
