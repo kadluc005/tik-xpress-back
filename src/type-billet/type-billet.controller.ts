@@ -3,6 +3,7 @@ import { TypeBilletService } from './type-billet.service';
 import { CreateTypeBilletDto } from './dto/create-type-billet.dto';
 import { UpdateTypeBilletDto } from './dto/update-type-billet.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
+import { Billet } from './entities/billet.entity';
 
 @Controller('type-billet')
 export class TypeBilletController {
@@ -13,6 +14,11 @@ export class TypeBilletController {
   create(@Body() createTypeBilletDto: CreateTypeBilletDto) {
     return this.typeBilletService.create(createTypeBilletDto);
   }
+
+  @Post('billet')
+  createBillet(@Body() billetData: Partial<Billet>){
+    return this.typeBilletService.createBillet(billetData);
+  } 
 
   @Get()
   findAll() {

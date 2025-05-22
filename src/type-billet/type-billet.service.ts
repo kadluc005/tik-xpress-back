@@ -5,6 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { TypeBillet } from './entities/type-billet.entity';
 import { Repository } from 'typeorm';
 import { Event } from 'src/events/entities/event.entity';
+import { Billet } from './entities/billet.entity';
 
 @Injectable()
 export class TypeBilletService {
@@ -12,6 +13,8 @@ export class TypeBilletService {
   constructor(
     @InjectRepository(TypeBillet)
     private typeBilletRepository: Repository<TypeBillet>,
+    @InjectRepository(Billet)
+    private billetRepository: Repository<Billet>,
     @InjectRepository(Event)
     private eventRepository: Repository<Event>,
   ) {}
@@ -43,6 +46,18 @@ export class TypeBilletService {
       where: { event: { id: eventId } },
     });
   }
+
+  async createBillet(billetData: Partial<Billet>): Promise<Billet>{
+    const billet = this.billetRepository.create({
+      ...billetData,
+      code: Billet.generateUniqueCode(billetData.id || 0),
+      estUtilise: false,
+    })
+    
+    return await this.billetRepository.save(billet);
+  }
+
+
 
   findOne(id: number) {
     return this.typeBilletRepository.findOneBy({ id });

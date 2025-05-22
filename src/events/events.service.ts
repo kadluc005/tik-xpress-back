@@ -68,4 +68,23 @@ export class EventsService {
     }
     return this.eventRepository.delete(id);
   }
+
+
+  async getOrganizerEvents(userId: number){
+    const events = await this.eventRepository.find({
+      where: { organisateur: { id: userId } },
+      relations: ['organisateur']
+    })
+
+    if (!events || events.length === 0) {
+      throw new NotFoundException("No events found");
+    } 
+
+    const organizerEvents = events.filter(event => event.organisateur?.id === userId);
+    if (organizerEvents.length === 0) {
+      throw new ForbiddenException("You are not allowed to access these events");
+    }
+
+    return organizerEvents;
+  }
 }

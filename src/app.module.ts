@@ -7,6 +7,7 @@ import { AuthModule } from './auth/auth.module';
 import { EventsModule } from './events/events.module';
 import { TypeBilletModule } from './type-billet/type-billet.module';
 import { RoleModule } from './role/role.module';
+import { CommandeModule } from './commande/commande.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { RoleModule } from './role/role.module';
     EventsModule,
     TypeBilletModule,
     RoleModule,
+    CommandeModule,
   ],
   controllers: [AppController],
   providers: [AppService],
