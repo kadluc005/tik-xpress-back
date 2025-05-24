@@ -17,7 +17,7 @@ export class AuthService {
     private roleService: RoleService,
     private readonly jwtService: JwtService,
   ) {}
-  async create(createAuthDto: CreateAuthDto) {
+  async create(createAuthDto: CreateAuthDto, role: string) {
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(createAuthDto.password, salt);
     const user = this.authRepository.create({
@@ -28,13 +28,12 @@ export class AuthService {
       created_at: new Date(),
       updated_at: new Date(),
     })
-    // createAuthDto.password = hash;
 
     // on sauvegarde l'utiliateur dans la base de données
     const savedUser = await this.authRepository.save(user);
 
     // on assigne le role orgnanisateur
-    await this.roleService.assignRoleToUser(savedUser.id, 'client');
+    await this.roleService.assignRoleToUser(savedUser.id, role);
 
     return this.authRepository.findOne({
       where: { id: savedUser.id },

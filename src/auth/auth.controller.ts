@@ -16,8 +16,8 @@ export class AuthController {
   }
 
   @Post('register')
-  create(@Body() createAuthDto: CreateAuthDto) {
-    return this.authService.create(createAuthDto);
+  create(@Body() createAuthDto: CreateAuthDto, role: string) {
+    return this.authService.create(createAuthDto, role);
   }
 
   @Get()

@@ -8,6 +8,8 @@ export class CreateAuthDto {
 
     prenom: string;
 
+    nomEntreprise: string;
+
     tel: string;
     
     password: string;

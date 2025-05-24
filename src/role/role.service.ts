@@ -67,4 +67,17 @@ export class RoleService {
             relations: ['roles', 'roles.role']
         });
     }
+
+    async getUserRoles(userId: number): Promise<Role[]> {
+        const user = await this.userRepository.findOne({
+            where: { id: userId },
+            relations: ['roles', 'roles.role']
+        });
+
+        if (!user) {
+            throw new Error('Utilisateur non trouvé');
+        }
+
+        return user.roles.map(userRole => userRole.role);
+    }
 }

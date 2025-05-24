@@ -20,6 +20,9 @@ export class Auth {
     prenom: string;
 
     @Column()
+    nomEntreprise: string
+
+    @Column()
     tel: string;
 
     @Column()
