@@ -8,6 +8,8 @@ export class UpdateEventDto extends PartialType(CreateEventDto) {
     date_debut?: Date;
     date_fin?: Date;
     lieu?: string;
+    latitude?: number;
+    longitude?: number;
     image_url?: string;
     updated_at?: Date;
 

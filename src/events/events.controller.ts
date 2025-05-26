@@ -1,24 +1,38 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req, BadRequestException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req, BadRequestException, UseInterceptors, UploadedFile } from '@nestjs/common';
 import { EventsService } from './events.service';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { RolesGuard } from 'src/role/roles.guard';
 import { Roles } from 'src/role/roles.decorator';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { extname } from 'path';
+import { diskStorage } from 'multer';
 
 @Controller('events')
 export class EventsController {
   constructor(private readonly eventsService: EventsService) {}
 
 
+  @UseInterceptors(FileInterceptor('image', {
+    storage: diskStorage({
+      destination: 'uploads/events',
+      filename: (req, file, cb) => {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() *1e9);
+        const ext = extname(file.originalname);
+        cb(null, `${file.fieldname}-${uniqueSuffix}${ext}`)
+      },
+    }),
+  }))
   @UseGuards(AuthGuard, RolesGuard)
-  @Roles('organisateur')
+  //@Roles('organisateur')
   @Post('create')
-  create(@Body() createEventDto: CreateEventDto, @Req() req) {
-    const userId = req.user.sub
+  create(@Body() createEventDto: CreateEventDto, @Req() req, @UploadedFile() image?: Express.Multer.File) {
+    const userId = req.user.sub;
+    const image_url = `/uploads/events/${image.filename}`;
     // console.log(userId)
     // console.log(createEventDto)
-    return this.eventsService.create(createEventDto, userId);
+    return this.eventsService.create({...createEventDto, image_url}, userId);
   }
 
   @Get()
