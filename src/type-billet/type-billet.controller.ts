@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+} from '@nestjs/common';
 import { TypeBilletService } from './type-billet.service';
 import { CreateTypeBilletDto } from './dto/create-type-billet.dto';
 import { UpdateTypeBilletDto } from './dto/update-type-billet.dto';
@@ -15,10 +24,11 @@ export class TypeBilletController {
     return this.typeBilletService.create(createTypeBilletDto);
   }
 
+  @UseGuards(AuthGuard)
   @Post('billet')
-  createBillet(@Body() billetData: Partial<Billet>){
+  createBillet(@Body() billetData: Partial<Billet>) {
     return this.typeBilletService.createBillet(billetData);
-  } 
+  }
 
   @Get()
   findAll() {
@@ -37,7 +47,10 @@ export class TypeBilletController {
 
   @UseGuards(AuthGuard)
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTypeBilletDto: UpdateTypeBilletDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateTypeBilletDto: UpdateTypeBilletDto,
+  ) {
     return this.typeBilletService.update(+id, updateTypeBilletDto);
   }
 

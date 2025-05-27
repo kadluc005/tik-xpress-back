@@ -1,23 +1,28 @@
-import { Auth } from "src/auth/entities/auth.entity";
-import { Billet } from "src/type-billet/entities/billet.entity";
-import { Column, CreateDateColumn, Entity, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Auth } from 'src/auth/entities/auth.entity';
+import { Billet } from 'src/type-billet/entities/billet.entity';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
-@Entity({ name: "commandes" })
+@Entity({ name: 'commandes' })
 export class Commande {
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @PrimaryGeneratedColumn()
-    id: number;
+  @ManyToOne(() => Auth)
+  utilisateur: Auth;
 
-    @ManyToOne(()=> Auth)
-    utilisateur: Auth;
+  @OneToMany(() => Billet, (billet) => billet.commande, { cascade: true })
+  billets: Billet[];
 
-    @ManyToMany(()=> Billet, billet => billet.commande)
-    billets: Billet[];
+  @CreateDateColumn()
+  date: Date;
 
-    @CreateDateColumn()
-    date: Date;
-
-    @Column()
-    prix_total: number;
-
+  @Column()
+  prix_total: number;
 }

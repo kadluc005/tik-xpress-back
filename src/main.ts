@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { join } from 'path';
+// import { join } from 'path';
+import * as path from 'path';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import * as bodyParser from 'body-parser'
 
@@ -15,7 +16,7 @@ async function bootstrap() {
   // Augmentez les limites ici (par exemple : 6 Mo)
   app.use(bodyParser.json({ limit: '6mb' }));
   app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
-  app.useStaticAssets(join(__dirname, '..', 'uploads'), {
+  app.useStaticAssets(path.join(__dirname, '..', 'uploads'), {
     prefix: '/uploads/',
   });
   await app.listen(3000);

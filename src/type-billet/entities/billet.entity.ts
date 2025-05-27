@@ -19,6 +19,9 @@ export class Billet {
     @Column()
     code: string;
 
+    @Column()
+    image_url: string;
+
     @Column({ default: false })
     estUtilise: boolean;
 
