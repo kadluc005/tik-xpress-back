@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateTypeBilletDto } from './dto/create-type-billet.dto';
 import { UpdateTypeBilletDto } from './dto/update-type-billet.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -10,6 +10,7 @@ import { createCanvas, loadImage } from 'canvas';
 import * as path from 'path';
 import * as fs from 'fs';
 import * as QRCode from 'qrcode';
+import { MailService } from 'src/mail/mail.service';
 
 @Injectable()
 export class TypeBilletService {
@@ -21,6 +22,7 @@ export class TypeBilletService {
     private billetRepository: Repository<Billet>,
     @InjectRepository(Event)
     private eventRepository: Repository<Event>,
+    private mailService: MailService
   ) {}
   
   async create(createTypeBilletDto: CreateTypeBilletDto) {
@@ -75,6 +77,10 @@ export class TypeBilletService {
 
     const imagePath = await this.generateBilletImage(code);
     savedBillet.image_url = imagePath;
+    // await this.mailService.sendBillet("lucienkadansao2005@gmail.com", 'votre billet', imagePath);
+
+    await this.mailService.sendBillet("moustitek@gmail.com", 'votre billet', path.join(__dirname, '..', '..', imagePath));
+
     await this.billetRepository.save(savedBillet); // MAJ avec l'image
 
     return savedBillet;
@@ -110,6 +116,24 @@ export class TypeBilletService {
     fs.writeFileSync(outputPath, buffer);
 
     return `/uploads/billets/${code}.png`; // Pour accès via une URL publique
+  }
+
+  async findBilletByCode(code: string): Promise<Billet | null> {
+    return this.billetRepository.findOne({
+      where: {code}
+    })
+  }
+
+  async validateBillet(code:string): Promise<Billet> {
+    const  billet = await this.findBilletByCode(code);
+    if (!billet) {
+      throw new NotFoundException(`Billet avec le code ${code} introuvable`);
+    }
+    if (billet.estUtilise) {
+      throw new BadRequestException(`Le billet avec le code ${code} a déjà été utilisé`);
+    }
+    billet.estUtilise = true;
+    return await this.billetRepository.save(billet);
   }
 
 

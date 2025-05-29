@@ -6,14 +6,15 @@ import { TypeBillet } from './entities/type-billet.entity';
 import { Event } from 'src/events/entities/event.entity';
 import { AuthModule } from 'src/auth/auth.module';
 import { Billet } from './entities/billet.entity';
+import { MailModule } from 'src/mail/mail.module';
 
 @Module({
   controllers: [TypeBilletController],
   providers: [TypeBilletService],
   imports: [
     TypeOrmModule.forFeature([TypeBillet, Event, Billet]),
-    //TypeOrmModule.forFeature([Event]),
     AuthModule,
+    MailModule
   ],
 })
 export class TypeBilletModule {}

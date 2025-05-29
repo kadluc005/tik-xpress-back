@@ -25,7 +25,6 @@ export class Billet {
     @Column({ default: false })
     estUtilise: boolean;
 
-
     // Générer un code unique de 6 caractères aléatoires
     static generateUniqueCode(id: number, longueurCode = 6){
         const caracteres = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
@@ -43,7 +42,7 @@ export class Billet {
             code += caracteres[valeursAleatoires[i] % caracteres.length];
         }
 
-        return `${code}-${Date.now()}`;
+        return `${code}-${id}`;
     }
 
 }

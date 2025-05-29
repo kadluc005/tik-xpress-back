@@ -8,6 +8,7 @@ import { EventsModule } from './events/events.module';
 import { TypeBilletModule } from './type-billet/type-billet.module';
 import { RoleModule } from './role/role.module';
 import { CommandeModule } from './commande/commande.module';
+import { MailModule } from './mail/mail.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { CommandeModule } from './commande/commande.module';
     TypeBilletModule,
     RoleModule,
     CommandeModule,
+    MailModule
   ],
   controllers: [AppController],
   providers: [AppService],

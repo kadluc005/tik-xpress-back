@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TikXpress - Notification</title>
+    <style>
+        /* Reset et styles de base */
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333333;
+            background-color: #f8f9fa;
+        }
+
+        /* Container principal */
+        .email-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        /* En-tête avec logo TikXpress */
+        .header {
+            background: linear-gradient(135deg, #3f51b5 0%, #2196F3 100%);
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 300;
+
+            .luxe {
+              font-weight: 700;
+              color: global.$accent-color;
+            }
+
+        /* Contenu */
+        .content {
+            padding: 30px;
+        }
+
+        h1 {
+            color: #3f51b5;
+            margin-top: 0;
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+        /* Bouton d'action */
+        .action-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #3f51b5 0%, #2196F3 100%);
+            color: white !important;
+            text-decoration: none;
+            padding: 14px 28px;
+            border-radius: 6px;
+            font-weight: 600;
+            margin: 20px 0;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(63, 81, 181, 0.2);
+        }
+
+        /* Section pièce jointe */
+        .attachment-card {
+            background-color: #f5f7ff;
+            border-left: 4px solid #3f51b5;
+            border-radius: 6px;
+            padding: 16px;
+            margin: 25px 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .attachment-icon {
+            font-size: 28px;
+            margin-right: 15px;
+            color: #3f51b5;
+        }
+
+        .attachment-details {
+            flex-grow: 1;
+        }
+
+        .attachment-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #2c3e50;
+        }
+
+        .attachment-info {
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+
+        /* Pied de page */
+        .footer {
+            background-color: #f1f3f9;
+            padding: 25px;
+            text-align: center;
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+
+        .footer-links {
+            margin: 15px 0;
+        }
+
+        .footer-links a {
+            color: #3f51b5;
+            text-decoration: none;
+            margin: 0 10px;
+            font-weight: 500;
+        }
+
+        .copyright {
+            margin-top: 15px;
+            font-size: 13px;
+        }
+
+        /* Responsive */
+        @media screen and (max-width: 480px) {
+            .content {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 22px;
+            }
+
+            .action-button {
+                display: block;
+                margin: 20px auto;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="email-container">
+    <!-- En-tête avec logo -->
+    <div class="header">
+        <div class="logo">Tik<span class="luxe">Xpress</span></div>
+    </div>
+
+    <!-- Contenu principal -->
+    <div class="content">
+        <h1>Votre notification TikXpress</h1>
+
+        <p>Bonjour [Prénom],</p>
+
+        <p>Nous avons le plaisir de vous informer que votre [réservation/commande/action] a bien été enregistrée. Retrouvez tous les détails ci-dessous.</p>
+
+        <!-- Bouton d'action principal -->
+        <a href="[LIEN_VERS_ACTION]" class="action-button">Voir le détail</a>
+
+        <!-- Pièce jointe simulée -->
+        <div class="attachment-card">
+            <div class="attachment-icon">📎</div>
+            <div class="attachment-details">
+                <div class="attachment-name">Confirmation_[Numéro].pdf</div>
+                <div class="attachment-info">PDF - 1.2 Mo • Ticket d'entrée inclus</div>
+            </div>
+        </div>
+
+        <p>Pour toute question concernant votre réservation, notre équipe est disponible à l'adresse <a href="mailto:support@tikxpress.com">support@tikxpress.com</a>.</p>
+
+        <p>À très bientôt sur TikXpress,</p>
+        <p><strong>L'équipe TikXpress</strong></p>
+    </div>
+
+    <!-- Pied de page -->
+    <div class="footer">
+        <div class="footer-links">
+            <a href="[LIEN_VERS_FAQ]">Centre d'aide</a>
+            <a href="[LIEN_CONDITIONS]">Conditions d'utilisation</a>
+            <a href="[LIEN_CONTACT]">Nous contacter</a>
+        </div>
+        <div class="copyright">
+            © 2023 TikXpress. Tous droits réservés.<br>
+            <a href="[LIEN_DESABONNEMENT]">Se désabonner</a> • <a href="[LIEN_PREFERENCES]">Gérer les préférences</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

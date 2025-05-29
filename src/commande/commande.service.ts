@@ -7,16 +7,17 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class CommandeService {
+  MailService: any;
   constructor(
     @InjectRepository(Commande)
     private commandeRepository: Repository<Commande>,
   ) {}
-  create(createCommandeDto: CreateCommandeDto, userId: number) {
+  async create(createCommandeDto: CreateCommandeDto, userId: number) {
     const commande = this.commandeRepository.create({
       utilisateur: {id: userId},
       ...createCommandeDto,
-      prix_total: 0,
     })
+
     return this.commandeRepository.save(commande);
   }
 
