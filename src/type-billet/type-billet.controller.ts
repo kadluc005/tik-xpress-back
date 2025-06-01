@@ -30,8 +30,9 @@ export class TypeBilletController {
 
   @UseGuards(AuthGuard)
   @Post('billet')
-  createBillet(@Body() billetData: Partial<Billet>) {
-    return this.typeBilletService.createBillet(billetData);
+  createBillet(@Body() body: { billetData: Partial<Billet>, email: string }) {
+    const { billetData, email } = body;
+    return this.typeBilletService.createBillet(billetData, email);
   }
 
   @Get()
@@ -39,7 +40,7 @@ export class TypeBilletController {
     return this.typeBilletService.findAll();
   }
 
-  @UseGuards(AuthGuard)
+  //@UseGuards(AuthGuard)
   @Get(':code')
   async findBilletByCode(@Param('code') code: string) {
     const billet = await this.typeBilletService.findBilletByCode(code);

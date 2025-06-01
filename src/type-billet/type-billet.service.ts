@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateTypeBilletDto } from './dto/create-type-billet.dto';
 import { UpdateTypeBilletDto } from './dto/update-type-billet.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -11,10 +15,10 @@ import * as path from 'path';
 import * as fs from 'fs';
 import * as QRCode from 'qrcode';
 import { MailService } from 'src/mail/mail.service';
+import { BilletDto } from './dto/billetDto';
 
 @Injectable()
 export class TypeBilletService {
-
   constructor(
     @InjectRepository(TypeBillet)
     private typeBilletRepository: Repository<TypeBillet>,
@@ -22,16 +26,16 @@ export class TypeBilletService {
     private billetRepository: Repository<Billet>,
     @InjectRepository(Event)
     private eventRepository: Repository<Event>,
-    private mailService: MailService
+    private mailService: MailService,
   ) {}
-  
+
   async create(createTypeBilletDto: CreateTypeBilletDto) {
-    const event =  await this.eventRepository.findOne({
-      where: { id: createTypeBilletDto.eventId }
-    })
+    const event = await this.eventRepository.findOne({
+      where: { id: createTypeBilletDto.eventId },
+    });
     if (!event) {
       throw new Error('Event not found');
-    } 
+    }
     const typeBillet = this.typeBilletRepository.create({
       ...createTypeBilletDto,
       event: event,
@@ -39,7 +43,7 @@ export class TypeBilletService {
       is_visible: true,
       created_at: new Date(),
       updated_at: new Date(),
-    })
+    });
     return await this.typeBilletRepository.save(typeBillet);
   }
 
@@ -53,13 +57,18 @@ export class TypeBilletService {
     });
   }
 
-  async createBillet(billetData: Partial<Billet>): Promise<Billet>{
-
-    if (!billetData.type || (typeof billetData.type === 'object' && !billetData.type.id)) {
-      throw new Error("TypeBillet est requis pour générer un billet.");
+  async createBillet(billetData: Partial<Billet>, email: string): Promise<Billet> {
+    if (
+      !billetData.type ||
+      (typeof billetData.type === 'object' && !billetData.type.id)
+    ) {
+      throw new Error('TypeBillet est requis pour générer un billet.');
     }
 
-    const typeId = typeof billetData.type === 'object' ? billetData.type.id : billetData.type;
+    const typeId =
+      typeof billetData.type === 'object'
+        ? billetData.type.id
+        : billetData.type;
     let unique = false;
     let code = '';
     while (!unique) {
@@ -71,7 +80,7 @@ export class TypeBilletService {
       ...billetData,
       code: code,
       estUtilise: false,
-    })
+    });
 
     const savedBillet = await this.billetRepository.save(billet);
 
@@ -79,7 +88,11 @@ export class TypeBilletService {
     savedBillet.image_url = imagePath;
     // await this.mailService.sendBillet("lucienkadansao2005@gmail.com", 'votre billet', imagePath);
 
-    await this.mailService.sendBillet("moustitek@gmail.com", 'votre billet', path.join(__dirname, '..', '..', imagePath));
+    await this.mailService.sendBillet(
+      email,
+      'votre billet',
+      path.join(__dirname, '..', '..', imagePath),
+    );
 
     await this.billetRepository.save(savedBillet); // MAJ avec l'image
 
@@ -111,38 +124,51 @@ export class TypeBilletService {
     ctx.drawImage(qrImage, width - 170, 50, 150, 150);
 
     // enregistrer l'image
-    const outputPath = path.join(__dirname, `../../uploads/billets/${code}.png`);
+    const outputPath = path.join(
+      __dirname,
+      `../../uploads/billets/${code}.png`,
+    );
     const buffer = canvas.toBuffer('image/png');
     fs.writeFileSync(outputPath, buffer);
 
     return `/uploads/billets/${code}.png`; // Pour accès via une URL publique
   }
 
-  async findBilletByCode(code: string): Promise<Billet | null> {
-    return this.billetRepository.findOne({
-      where: {code}
-    })
+  async findBilletByCode(code: string): Promise<BilletDto | null> {
+    const billet = await this.billetRepository.findOne({
+      where: { code },
+      relations: ['type', 'type.event'],
+    });
+    if (billet.estUtilise) {
+      throw new BadRequestException(
+        `Le billet avec le code ${code} a déjà été utilisé`,
+      );
+    }
+    if (!billet) return null;
+
+    return new BilletDto(billet);
   }
 
-  async validateBillet(code:string): Promise<Billet> {
-    const  billet = await this.findBilletByCode(code);
+  async validateBillet(code: string): Promise<Billet> {
+    const billet = await this.findBilletByCode(code);
     if (!billet) {
       throw new NotFoundException(`Billet avec le code ${code} introuvable`);
     }
     if (billet.estUtilise) {
-      throw new BadRequestException(`Le billet avec le code ${code} a déjà été utilisé`);
+      throw new BadRequestException(
+        `Le billet avec le code ${code} a déjà été utilisé`,
+      );
     }
     billet.estUtilise = true;
     return await this.billetRepository.save(billet);
   }
-
 
   findOne(id: number) {
     return this.typeBilletRepository.findOneBy({ id });
   }
 
   async update(id: number, updateTypeBilletDto: UpdateTypeBilletDto) {
-    const typeBillet = await this.typeBilletRepository.findOneBy({ id })
+    const typeBillet = await this.typeBilletRepository.findOneBy({ id });
     if (!typeBillet) {
       throw new Error('TypeBillet not found');
     }
@@ -154,5 +180,4 @@ export class TypeBilletService {
   remove(id: number) {
     return `This action removes a #${id} typeBillet`;
   }
-
 }
