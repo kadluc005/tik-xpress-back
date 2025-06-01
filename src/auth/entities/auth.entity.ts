@@ -41,10 +41,13 @@ export class Auth {
     @Column()
     is_visible: boolean;
     
-    @Column()
+    @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
     created_at: Date;
 
-    @Column()
+    @Column({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+    onUpdate: 'CURRENT_TIMESTAMP',
+    })
     updated_at: Date;
-
 }

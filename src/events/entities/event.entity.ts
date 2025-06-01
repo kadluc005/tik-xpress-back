@@ -1,50 +1,54 @@
-import { Auth } from "src/auth/entities/auth.entity";
-import { PrimaryGeneratedColumn, Column, Entity, ManyToOne } from "typeorm";
+import { Auth } from 'src/auth/entities/auth.entity';
+import { PrimaryGeneratedColumn, Column, Entity, ManyToOne } from 'typeorm';
 
-@Entity({ name: "events" })
+@Entity({ name: 'events' })
 export class Event {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column()
-    nom: string;
+  @Column()
+  nom: string;
 
-    @Column()
-    description: string;
+  @Column()
+  description: string;
 
-    @Column()
-    type: string;
+  @Column()
+  type: string;
 
-    @Column()
-    date_debut: Date;
+  @Column()
+  date_debut: Date;
 
-    @Column()
-    date_fin: Date;
+  @Column()
+  date_fin: Date;
 
-    @Column()
-    lieu: string;
+  @Column()
+  lieu: string;
 
-    @Column('float')
-    latitude: number;
+  @Column('float')
+  latitude: number;
 
-    @Column('float')
-    longitude: number;
+  @Column('float')
+  longitude: number;
 
-    @Column()
-    image_url: string;
+  @Column()
+  image_url: string;
 
-    @ManyToOne(()=> Auth, auth => auth.events)
-    organisateur: Auth;
+  @ManyToOne(() => Auth, (auth) => auth.events)
+  organisateur: Auth;
 
-    @Column()
-    is_active: boolean;
+  @Column()
+  is_active: boolean;
 
-    @Column()
-    is_visible: boolean;
-    
-    @Column()
-    created_at: Date;
+  @Column()
+  is_visible: boolean;
 
-    @Column()
-    updated_at: Date;
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  created_at: Date;
+
+  @Column({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+    onUpdate: 'CURRENT_TIMESTAMP',
+  })
+  updated_at: Date;
 }
