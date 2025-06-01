@@ -6,7 +6,6 @@ import { Auth } from './entities/auth.entity';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
-import { Role } from './entities/role.entity';
 import { RoleService } from 'src/role/role.service';
 
 @Injectable()
