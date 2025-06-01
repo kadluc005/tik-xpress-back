@@ -19,7 +19,7 @@ export class Auth {
     @Column()
     prenom: string;
 
-    @Column()
+    @Column({ nullable: true })
     nomEntreprise: string
 
     @Column()
