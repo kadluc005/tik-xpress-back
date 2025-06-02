@@ -27,12 +27,12 @@ export class EventsController {
   @UseGuards(AuthGuard, RolesGuard)
   //@Roles('organisateur')
   @Post('create')
-  create(@Body() createEventDto: CreateEventDto, @Req() req, @UploadedFile() image?: Express.Multer.File) {
+  async create(@Body() createEventDto: CreateEventDto, @Req() req, @UploadedFile() image?: Express.Multer.File) {
     const userId = req.user.sub;
     const image_url = `/uploads/events/${image.filename}`;
     // console.log(userId)
     // console.log(createEventDto)
-    return this.eventsService.create({...createEventDto, image_url}, userId);
+    return await this.eventsService.create({...createEventDto, image_url}, userId);
   }
 
   @Get()

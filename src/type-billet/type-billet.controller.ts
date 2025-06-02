@@ -23,7 +23,7 @@ export class TypeBilletController {
 
   @Post()
   @UseGuards(AuthGuard, RolesGuard)
-  @Roles('organisateur')
+  //@Roles('organisateur')
   create(@Body() createTypeBilletDto: CreateTypeBilletDto) {
     return this.typeBilletService.create(createTypeBilletDto);
   }

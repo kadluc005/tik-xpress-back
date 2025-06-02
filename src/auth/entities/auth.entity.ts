@@ -4,7 +4,6 @@ import { Role } from "./role.entity";
 import { UserRole } from "./user-role.entity";
 
 @Entity({ name: "users"})
-@TableInheritance({column: {type: "varchar", name: "type"}})
 export class Auth {
 
     @PrimaryGeneratedColumn()
@@ -28,12 +27,11 @@ export class Auth {
     @Column()
     password: string;
 
-    @OneToMany(()=> UserRole, userrole => userrole.user)
+    @OneToMany(()=> UserRole, userrole => userrole.user, { onDelete: 'CASCADE' })
     roles: UserRole[];
 
-    @OneToMany(()=> Event, event => event.organisateur)
+    @OneToMany(()=> Event, event => event.organisateur, { onDelete: 'CASCADE' })
     events: Event[];
-
 
     @Column()
     is_active: boolean;

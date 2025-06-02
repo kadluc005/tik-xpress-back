@@ -17,7 +17,7 @@ export class Commande {
   @ManyToOne(() => Auth)
   utilisateur: Auth;
 
-  @OneToMany(() => Billet, (billet) => billet.commande, { cascade: true })
+  @OneToMany(() => Billet, (billet) => billet.commande, { onDelete: 'CASCADE' })
   billets: Billet[];
 
   @CreateDateColumn()

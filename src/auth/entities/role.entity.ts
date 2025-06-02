@@ -10,7 +10,7 @@ export class Role {
     @Column({ unique: true })
     nom: string;
 
-    @OneToMany(()=> UserRole, userrole => userrole.role)
+    @OneToMany(()=> UserRole, userrole => userrole.role, { onDelete: 'CASCADE' })
     userRoles: UserRole[];
 
 }

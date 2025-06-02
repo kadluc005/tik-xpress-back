@@ -33,7 +33,7 @@ export class Event {
   @Column()
   image_url: string;
 
-  @ManyToOne(() => Auth, (auth) => auth.events)
+  @ManyToOne(() => Auth, (auth) => auth.events, { onDelete: 'CASCADE' })
   organisateur: Auth;
 
   @Column()

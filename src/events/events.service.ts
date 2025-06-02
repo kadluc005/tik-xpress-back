@@ -4,14 +4,17 @@ import { UpdateEventDto } from './dto/update-event.dto';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Event } from './entities/event.entity';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { EventCreatedEvent } from './event-created.event';
 
 @Injectable()
 export class EventsService {
   constructor(
     @InjectRepository(Event)
     private eventRepository: Repository<Event>,
+    private eventEmitter2: EventEmitter2
   ) {}
-  create(createEventDto: CreateEventDto, userId: number) {
+  async create(createEventDto: CreateEventDto, userId: number) {
 
     const event = this.eventRepository.create({
       ...createEventDto,
@@ -21,8 +24,10 @@ export class EventsService {
       created_at: new Date(),
       updated_at: new Date(),
     })
+    const savedEvent = await this.eventRepository.save(event);
     // console.log(event)
-    return this.eventRepository.save(event);
+    //this.eventEmitter2.emit('event.created', new EventCreatedEvent(savedEvent));
+    return savedEvent;
   }
 
   findAll(): Promise<Event[]> {

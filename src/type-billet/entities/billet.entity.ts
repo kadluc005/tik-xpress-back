@@ -10,10 +10,10 @@ export class Billet {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ManyToOne(()=> TypeBillet, {eager: true})
+    @ManyToOne(()=> TypeBillet, {eager: true, onDelete: 'CASCADE' })
     type: TypeBillet;
 
-    @ManyToOne(()=> Commande, commande => commande.billets)
+    @ManyToOne(()=> Commande, commande => commande.billets, { cascade: true,  onDelete: 'CASCADE' })
     commande: Commande;
 
     @Column()

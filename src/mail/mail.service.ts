@@ -3,6 +3,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 import { Injectable } from '@nestjs/common';
+import { from } from 'form-data';
 
 @Injectable()
 export class MailService {
@@ -58,5 +59,14 @@ export class MailService {
     };
 
     await this.transporter.sendMail(mailOptions);
+  }
+
+  async sendMail(to: string, subject: string, text: string) {
+    await this.transporter.sendMail({
+      from: '"Mon Événement" <vacheck759@gmail.com>',
+      to,
+      subject,
+      text,
+    });
   }
 }

@@ -9,16 +9,19 @@ export class TypeBillet {
   @Column()
   libelle: string;
 
-  @Column()
+  @Column({ default:0 })
   prix: number;
 
-  @Column({ length: 255 })
+  @Column({ length: 255, nullable: true })
   privileges: string;
 
-  @Column()
+  @Column({ default: 0})
   quantite: number;
 
-  @ManyToOne(() => Event, (event) => event.id)
+  @Column({ default: 0 })
+  quantiteRestante: number;
+
+  @ManyToOne(() => Event, (event) => event.id, { onDelete: 'CASCADE' })
   event: Event;
 
   @Column()
