@@ -34,23 +34,12 @@ export class MailService {
       subject,
       text: 'Voici votre billet pour l’événement.',
       html: `
-            <h2 style="font-family: Arial, sans-serif; color: #2c3e50; margin-bottom: 10px;">
-            Bonjour👋,
-            </h2>
-            <h3 style="font-family: Arial, sans-serif; color: #34495e; margin-bottom: 15px;">
-            Merci pour votre inscription à notre événement.
-            </h3>
-            <p style="font-family: Arial, sans-serif; color: #555; font-size: 16px; line-height: 1.5; margin-bottom: 15px;">
-            Veuillez trouver en pièce jointe votre billet d’entrée. Présentez-le à l’entrée le jour de l’événement, sous format numérique ou imprimé.
-            </p>
-            <p style="font-family: Arial, sans-serif; color: #27ae60; font-size: 16px; line-height: 1.5; margin-bottom: 15px;">
-            Nous avons hâte de vous accueillir !🎉
-            </p>
-            <p style="font-family: Arial, sans-serif; color: #555; font-size: 14px; line-height: 1.4;">
-            Cordialement,<br>
-            L’équipe d’organisation
-            </p>
-        `,
+      <h2 style="font-family: Arial, sans-serif; color: #2c3e50;">Bonjour👋,</h2>
+      <h3 style="font-family: Arial, sans-serif; color: #34495e;">Merci pour votre inscription à notre événement.</h3>
+      <p style="font-family: Arial, sans-serif; color: #555;">Veuillez trouver en pièce jointe votre billet d’entrée.</p>
+      <p style="font-family: Arial, sans-serif; color: #27ae60;">Nous avons hâte de vous accueillir !🎉</p>
+      <p style="font-family: Arial, sans-serif; color: #555;">Cordialement,<br>L’équipe d’organisation</p>
+    `,
       attachments: [
         {
           filename: 'billet.png',
