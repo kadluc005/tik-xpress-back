@@ -57,7 +57,10 @@ export class TypeBilletService {
     });
   }
 
-  async createBillet(billetData: Partial<Billet>, email: string): Promise<Billet> {
+  async createBillet(
+    billetData: Partial<Billet>,
+    email: string,
+  ): Promise<Billet> {
     if (
       !billetData.type ||
       (typeof billetData.type === 'object' && !billetData.type.id)
@@ -91,6 +94,11 @@ export class TypeBilletService {
     await this.mailService.sendBillet(
       email,
       'votre billet',
+      path.join(__dirname, '..', '..', imagePath),
+    );
+
+    console.log(
+      'URL de limage du billet ',
       path.join(__dirname, '..', '..', imagePath),
     );
 
