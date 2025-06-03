@@ -57,10 +57,7 @@ export class TypeBilletService {
     });
   }
 
-  async createBillet(
-    billetData: Partial<Billet>,
-    email: string,
-  ): Promise<Billet> {
+  async createBillet(billetData: Partial<Billet>, email: string): Promise<Billet> {
     if (
       !billetData.type ||
       (typeof billetData.type === 'object' && !billetData.type.id)
@@ -79,16 +76,17 @@ export class TypeBilletService {
       const existing = await this.billetRepository.findOne({ where: { code } });
       if (!existing) unique = true;
     }
-    const imagePath = await this.generateBilletImage(code);
     const billet = this.billetRepository.create({
       ...billetData,
       code: code,
-      image_url: imagePath,
+      image_url: '',
       estUtilise: false,
-
     });
 
     const savedBillet = await this.billetRepository.save(billet);
+
+    const imagePath = await this.generateBilletImage(code);
+    savedBillet.image_url = imagePath;
     // await this.mailService.sendBillet("lucienkadansao2005@gmail.com", 'votre billet', imagePath);
 
     await this.mailService.sendBillet(
@@ -97,11 +95,7 @@ export class TypeBilletService {
       path.join(__dirname, '..', '..', imagePath),
     );
 
-    console.log(
-      'URL de limage du billet ',
-      path.join(__dirname, '..', '..', imagePath),
-    );
-
+    await this.billetRepository.save(savedBillet); // MAJ avec l'image
 
     return savedBillet;
   }
