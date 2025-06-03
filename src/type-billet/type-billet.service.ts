@@ -94,13 +94,14 @@ export class TypeBilletService {
     console.log('Image URL333:', savedBillet.image_url);
     // await this.mailService.sendBillet("lucienkadansao2005@gmail.com", 'votre billet', imagePath);
 
+    await this.billetRepository.save(savedBillet); // MAJ avec l'image
     await this.mailService.sendBillet(
       email,
       'votre billet',
       path.join(__dirname, '..', '..', imagePath),
     );
 
-    await this.billetRepository.save(savedBillet); // MAJ avec l'image
+    
 
     return savedBillet;
   }
