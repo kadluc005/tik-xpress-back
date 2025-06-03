@@ -18,14 +18,15 @@ export class MailService {
   });
 
   async sendBillet(to: string, subject: string, billetImagePath: string) {
-    const attachmentExists = fs.existsSync(billetImagePath);
+    // Nettoyer le chemin du fichier pour éviter les slashs en trop
+    const cleanPath = billetImagePath.replace(/^\/+/, '');
 
-    if (!attachmentExists) {
+    // Recomposer le chemin absolu si nécessaire
+    const finalPath = path.resolve(cleanPath);
+
+    if (!fs.existsSync(finalPath)) {
       throw new Error('Image du billet non trouvée');
     }
-
-    //const htmlPath = path.join(__dirname, 'mail-template.html');
-    //const htmlContent = fs.readFileSync(htmlPath, 'utf-8');
 
     const mailOptions = {
       from: '"Mon Événement" <vacheck759@gmail.com>',
@@ -53,7 +54,7 @@ export class MailService {
       attachments: [
         {
           filename: 'billet.png',
-          path: billetImagePath,
+          path: finalPath,
         },
       ],
     };
