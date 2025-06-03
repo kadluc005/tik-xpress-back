@@ -57,7 +57,10 @@ export class TypeBilletService {
     });
   }
 
-  async createBillet(billetData: Partial<Billet>, email: string): Promise<Billet> {
+  async createBillet(
+    billetData: Partial<Billet>,
+    email: string,
+  ): Promise<Billet> {
     if (
       !billetData.type ||
       (typeof billetData.type === 'object' && !billetData.type.id)
@@ -124,15 +127,22 @@ export class TypeBilletService {
     const qrImage = await loadImage(qrDataURL);
     ctx.drawImage(qrImage, width - 170, 50, 150, 150);
 
-    // enregistrer l'image
-    const outputPath = path.join(
-      __dirname,
-      `../../uploads/billets/${code}.png`,
-    );
+    // définir chemin absolu du fichier
+    const uploadsDir = path.join(__dirname, '../../uploads/billets');
+    const outputPath = path.join(uploadsDir, `${code}.png`);
+
+    // s'assurer que le dossier existe
+    if (!fs.existsSync(uploadsDir)) {
+      fs.mkdirSync(uploadsDir, { recursive: true });
+      console.log(`Dossier créé : ${uploadsDir}`);
+    }
+
+    // enregistrer le fichier
     const buffer = canvas.toBuffer('image/png');
     fs.writeFileSync(outputPath, buffer);
+    console.log(`Billet enregistré à : ${outputPath}`);
 
-    return `/uploads/billets/${code}.png`; // Pour accès via une URL publique
+    return outputPath; // retourne chemin absolu
   }
 
   async findBilletByCode(code: string): Promise<BilletDto | null> {
