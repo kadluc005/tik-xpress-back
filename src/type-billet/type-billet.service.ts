@@ -94,14 +94,13 @@ export class TypeBilletService {
     console.log('Image URL333:', savedBillet.image_url);
     // await this.mailService.sendBillet("lucienkadansao2005@gmail.com", 'votre billet', imagePath);
 
-    await this.billetRepository.save(savedBillet); // MAJ avec l'image
     await this.mailService.sendBillet(
       email,
       'votre billet',
-      path.join(__dirname, '..', '..', imagePath),
+      imagePath,
     );
 
-    
+    await this.billetRepository.save(savedBillet); // MAJ avec l'image
 
     return savedBillet;
   }
@@ -131,12 +130,12 @@ export class TypeBilletService {
     ctx.drawImage(qrImage, width - 170, 50, 150, 150);
 
     // enregistrer l'image
-    const relativePath = `/uploads/billets/${code}.png`;
-    const outputPath = path.join(__dirname, '..', '..', relativePath);
-    const buffer = canvas.toBuffer('image/png');
-    fs.writeFileSync(outputPath, buffer);
+    const relativePath = `uploads/billets/${code}.png`; // <- pas de slash au début
+    const outputPath = path.join(process.cwd(), relativePath); // <- chemin absolu propre
+    fs.mkdirSync(path.dirname(outputPath), { recursive: true }); // <- s’assure que le dossier existe
+    fs.writeFileSync(outputPath, canvas.toBuffer('image/png'));
 
-    return relativePath; // Pour accès via une URL publique
+    return `/${relativePath}`; // Pour accès via une URL publique
   }
 
   async findBilletByCode(code: string): Promise<BilletDto | null> {
