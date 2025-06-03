@@ -73,7 +73,7 @@ export class TypeBilletService {
         ? billetData.type.id
         : billetData.type;
     let unique = false;
-    let code = '';
+    let code: string;
     while (!unique) {
       code = Billet.generateUniqueCode(typeId);
       const existing = await this.billetRepository.findOne({ where: { code } });
@@ -81,7 +81,7 @@ export class TypeBilletService {
     }
     const billet = this.billetRepository.create({
       ...billetData,
-      code: code,
+      code,
       image_url: '',
       estUtilise: false,
     });
@@ -130,14 +130,12 @@ export class TypeBilletService {
     ctx.drawImage(qrImage, width - 170, 50, 150, 150);
 
     // enregistrer l'image
-    const outputPath = path.join(
-      __dirname,
-      `../../uploads/billets/${code}.png`,
-    );
+    const relativePath = `/uploads/billets/${code}.png`;
+    const outputPath = path.join(__dirname, '..', '..', relativePath);
     const buffer = canvas.toBuffer('image/png');
     fs.writeFileSync(outputPath, buffer);
 
-    return `/uploads/billets/${code}.png`; // Pour accès via une URL publique
+    return relativePath; // Pour accès via une URL publique
   }
 
   async findBilletByCode(code: string): Promise<BilletDto | null> {
