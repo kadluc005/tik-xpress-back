@@ -141,12 +141,13 @@ export class TypeBilletService {
       where: { code },
       relations: ['type', 'type.event'],
     });
+    if (!billet) return null;
     if (billet.estUtilise) {
       throw new BadRequestException(
         `Le billet avec le code ${code} a déjà été utilisé`,
       );
     }
-    if (!billet) return null;
+    
 
     return new BilletDto(billet);
   }
