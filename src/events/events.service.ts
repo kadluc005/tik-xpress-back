@@ -26,7 +26,7 @@ export class EventsService {
     })
     const savedEvent = await this.eventRepository.save(event);
     // console.log(event)
-    //this.eventEmitter2.emit('event.created', new EventCreatedEvent(savedEvent));
+    this.eventEmitter2.emit('event.created', new EventCreatedEvent(savedEvent));
     return savedEvent;
   }
 

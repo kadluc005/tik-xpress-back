@@ -9,7 +9,7 @@ export class Event {
   @Column()
   nom: string;
 
-  @Column()
+  @Column({type: 'text'})
   description: string;
 
   @Column()
