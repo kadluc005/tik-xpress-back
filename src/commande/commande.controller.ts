@@ -20,6 +20,11 @@ export class CommandeController {
     return this.commandeService.findAll();
   }
 
+  @Get('user/:userid')
+  findCommandeByUserId(@Param('userid') userid: string) {
+    return this.commandeService.findCommandeByUserId(+userid);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.commandeService.findOne(+id);

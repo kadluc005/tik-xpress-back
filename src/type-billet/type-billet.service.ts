@@ -89,9 +89,7 @@ export class TypeBilletService {
     const savedBillet = await this.billetRepository.save(billet);
 
     const imagePath = await this.generateBilletImage(code);
-    console.log('Image Path:', imagePath);
     savedBillet.image_url = imagePath;
-    console.log('Image URL333:', savedBillet.image_url);
     // await this.mailService.sendBillet("lucienkadansao2005@gmail.com", 'votre billet', imagePath);
 
     await this.mailService.sendBillet(

@@ -56,7 +56,6 @@ export class MailService {
     };
 
 
-    console.log("URL :", finalPath);
     await this.transporter.sendMail(mailOptions);
   }
 

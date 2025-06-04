@@ -25,6 +25,13 @@ export class CommandeService {
     return this.commandeRepository.find();
   }
 
+  findCommandeByUserId(userId: number) {
+    return this.commandeRepository.find({
+      where: { utilisateur: { id: userId } },
+      relations: ['utilisateur', 'billets'],
+    });
+  }
+
   findOne(id: number) {
     return `This action returns a #${id} commande`;
   }
