@@ -29,7 +29,7 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
         database: configService.get('DB_NAME'),
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
         driver: require('mysql2'),
-        synchronize: true,
+        // synchronize: true,
       }),
     }),
     AuthModule,
